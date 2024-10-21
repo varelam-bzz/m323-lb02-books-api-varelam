@@ -12,7 +12,8 @@ app.register_blueprint(book_blueprint)
 
 
 def generate_testdata():
-    book_dao = BookDao('books.db')
+    """Generates necessary testdata"""
+    book_dao = BookDao("books.db")
 
     book_dao.create_table()
 
@@ -23,7 +24,7 @@ def generate_testdata():
             author="Frank Miller",
             published_year=1987,
             price=19.99,
-            genre=["Action", "Crime", "Superhero"]
+            genre=["Action", "Crime", "Superhero"],
         )
     )
     book_dao.add_book(
@@ -33,7 +34,7 @@ def generate_testdata():
             author="Alan Moore",
             published_year=1988,
             price=17.99,
-            genre=["Action", "Psychological", "Superhero"]
+            genre=["Action", "Psychological", "Superhero"],
         )
     )
     book_dao.add_book(
@@ -43,7 +44,7 @@ def generate_testdata():
             author="Jeph Loeb",
             published_year=2002,
             price=24.99,
-            genre=["Action", "Romance", "Superhero"]
+            genre=["Action", "Romance", "Superhero"],
         )
     )
     book_dao.add_book(
@@ -53,7 +54,7 @@ def generate_testdata():
             author="Mark Millar",
             published_year=2003,
             price=21.99,
-            genre=["Action", "Alternate Universe", "Superhero"]
+            genre=["Action", "Alternate Universe", "Superhero"],
         )
     )
     book_dao.add_book(
@@ -63,7 +64,7 @@ def generate_testdata():
             author="Greg Rucka",
             published_year=2002,
             price=14.99,
-            genre=["Action", "Mythology", "Superhero"]
+            genre=["Action", "Mythology", "Superhero"],
         )
     )
 

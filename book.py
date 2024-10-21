@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Book:
+    """Book dataclass"""
     isbn: str
     title: str
     author: str
