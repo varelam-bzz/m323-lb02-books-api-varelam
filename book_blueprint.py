@@ -90,3 +90,11 @@ def get_discount(isbn, discount):
 def apply_discount(isbn, discount):
     """Apply a discount to a book and return its new price."""
     return get_discount(isbn, discount)
+
+
+@book_blueprint.route("/books/sorted-by-price", methods=["GET"])
+def get_sorted_books():
+    """Retrieve books sorted by price and name in ascending order."""
+    books = book_dao.get_all_books()
+    sorted_books = sorted(books, key=lambda book: (book.price, book.title))
+    return jsonify(sorted_books), 200
