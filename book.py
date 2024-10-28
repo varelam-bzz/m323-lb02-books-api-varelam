@@ -11,4 +11,4 @@ class Book:
     author: str
     published_year: int
     price: float
-    genre: list[str]
+    genre: tuple
