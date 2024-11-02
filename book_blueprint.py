@@ -1,4 +1,5 @@
 """Book blueprint"""
+from functools import reduce
 
 from flask import Blueprint, jsonify, request
 from book_dao import BookDao
@@ -98,3 +99,15 @@ def get_sorted_books():
     books = book_dao.get_all_books()
     sorted_books = sorted(books, key=lambda book: (book.price, book.title))
     return jsonify(sorted_books), 200
+
+
+@book_blueprint.route("/books/genre_price/<string:genre>", methods=["GET"])
+def get_genre_price(genre):
+    """Gesamtpreis aller Bücher eines bestimmten Genres berechnen."""
+    books = book_dao.get_all_books()
+    filtered_books = filter(
+        lambda book: genre.lower() in map(lambda g: g.lower(), book.genre), books
+    )
+    total_price = reduce(lambda acc, book: acc + book.price, filtered_books, 0)
+    return jsonify({"genre": genre, "total_price": round(total_price, 2)}), 200
+
