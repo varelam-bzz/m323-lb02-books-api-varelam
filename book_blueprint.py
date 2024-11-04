@@ -135,3 +135,35 @@ def get_discounted_books(discount_percentage):
     ]
 
     return jsonify(discounted_books), 200
+
+
+def filter_books_by_price(books, min_price, max_price):
+    """Filtert Bücher, deren Preis über dem Mindestpreis und unter dem Höchstpreis liegt."""
+    if max_price < min_price:
+        return jsonify({"error": "Min price cannot be higher than max price."}), 200
+    return [
+        book for book in books
+        if min_price <= book.price <= max_price
+    ]
+
+
+def sort_books_by_price(books):
+    """Sortiert Bücher in aufsteigender Reihenfolge nach Preis."""
+    return sorted(books, key=lambda book: (book.price, book.title))
+
+
+def filter_and_sort_by_price(books, min_price, max_price):
+    """Hauptalgorithmus, der Bücher filtert und sortiert."""
+    filtered_books = filter_books_by_price(books, min_price, max_price)
+    sorted_books = sort_books_by_price(filtered_books)
+    return sorted_books
+
+
+@book_blueprint.route("/books/filter_sort/<int:min_price>/<int:max_price>", methods=["GET"])
+def get_filtered_sorted_books(min_price, max_price):
+    """Gibt eine sortierte Liste von Büchern über einem bestimmten Mindestpreis zurück."""
+    books = book_dao.get_all_books()
+    sorted_books = filter_and_sort_by_price(books, min_price, max_price)
+
+    return jsonify(sorted_books), 200
+
