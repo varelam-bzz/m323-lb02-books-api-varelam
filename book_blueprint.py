@@ -111,3 +111,27 @@ def get_genre_price(genre):
     total_price = reduce(lambda acc, book: acc + book.price, filtered_books, 0)
     return jsonify({"genre": genre, "total_price": round(total_price, 2)}), 200
 
+
+@book_blueprint.route("/books/discounted/<int:discount_percentage>", methods=["GET"])
+def get_discounted_books(discount_percentage):
+    """Gibt eine Liste aller Bücher mit dem angegebenen Rabatt zurück."""
+    def discount_closure(percentage):
+        def apply_discount_inner(price):
+            return price * (1 - percentage / 100)
+
+        return apply_discount_inner
+
+    applied_discount = discount_closure(discount_percentage)
+
+    books = book_dao.get_all_books()
+    discounted_books = [
+        {
+            "isbn": book.isbn,
+            "title": book.title,
+            "original_price": book.price,
+            "discounted_price": round(applied_discount(book.price), 2),
+        }
+        for book in books
+    ]
+
+    return jsonify(discounted_books), 200
